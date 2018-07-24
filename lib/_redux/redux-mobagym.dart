@@ -19,10 +19,13 @@ abstract class MobagymAppState implements Built<MobagymAppState, MobagymAppState
 
 MobagymAppState mobagymReducer(MobagymAppState state,dynamic action)
 {
-  return new MobagymAppState((b)=>b
+  var s = new MobagymAppState((b)=>b
     ..socialState = socialReducer(state.socialState, action).toBuilder()
     ..appInfoState = bootReducer(state.appInfoState, action).toBuilder()
   );
+  print("mobagymReducer");
+  print(s);
+  return s;
 }
 void mobagymMiddleware(Store<MobagymAppState> store, dynamic action, NextDispatcher next)
 {

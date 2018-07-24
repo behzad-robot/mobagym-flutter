@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobagym/social_items/card_list/social_items_card_list_container.dart';
 
 class TestHelper extends StatelessWidget{
   @override
@@ -12,8 +13,8 @@ class TestHelper extends StatelessWidget{
           children: <Widget>[
             Column(
               children: <Widget>[
-                RaisedButton(child:Text("Users List"),onPressed:(){
-
+                RaisedButton(child:Text("Social Card List"),onPressed:(){
+                  Navigator.of(context).push(MaterialPageRoute(builder:(context)=>SocialItemsCardListContainer("")));
                 },)
               ],
             ),

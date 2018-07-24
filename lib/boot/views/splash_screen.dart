@@ -71,8 +71,12 @@ class _SplashScreenState extends State<SplashScreen> {
       API.Users.loginUser("laku22","KopoKopo").then((user){
         print("logged in as ${user.username}");
         store.dispatch(Actions.UserActions.saveCurrentUser(user));
+        finishBoot();
       }).catchError(onError);
     }).catchError(onError);
+  }
+  void finishBoot(){
+    Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
   }
   Future<bool> _loadInfo(Store store) async{
     print("_loadInfo");

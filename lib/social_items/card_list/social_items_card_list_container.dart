@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:mobagym/_redux/redux-mobagym.dart';
+import 'package:mobagym/social_items/card_list/social_items_card_list.dart';
 import 'package:mobagym/social_items/data/social_item.dart';
 import 'package:mobagym/views/loading/error_view.dart';
 import 'package:mobagym/views/loading/loading_view.dart';
@@ -32,62 +33,68 @@ class _SocialItemsCardListContainerState extends State<SocialItemsCardListContai
   @override
   Widget build(BuildContext context) {
     return StoreConnector<MobagymAppState,_SocialCardList>(
-      converter: (store) {
-        var vm = new _SocialCardList();
-        /*var query = store.state.socialState.getQuery(_params);
+      converter: (store){
+
+        var vm = _SocialCardList();
+        vm.refresh = (up){
+          if(up)
+            store.dispatch(Actions.SocialActions.getItems(_params,forceReload: true));
+        };
+        var query = store.state.socialState.getQuery(_params);
         if(query == null)
         {
-          store.dispatch(Actions.SocialActions.getItems(_params,forceReload: false));
+          Future.delayed(const Duration(milliseconds: 300),(){
+            store.dispatch(Actions.SocialActions.getItems(_params,forceReload: false));
+          });
         }
         else
         {
           vm.loading = query.loading;
-          vm.error = query.error;
+          vm.error = vm.error;
           vm.items = store.state.socialState.getItemsForQuery(_params);
         }
+        print("vm.loading=${vm.loading}");
+        print("vm.error=${vm.error}");
+        print("vm.items=${vm.items.length}");
+        if(loadedItems.length != 0 && vm.items.length != 0)
+          _refreshController.sendBack(true,RefreshStatus.completed);
         if(vm.items.length != 0)
-          loadedItems = vm.items;*/
+          loadedItems = vm.items;
         return vm;
       },
       builder: (context,viewModel){
-        /*return RefreshIndicator(
-          child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context,index){
-                return new Text(index.toString());
-              }
-              ),
-          onRefresh: _refresh,
-        );*/
-        if(loadedItems.length != 0)
-        {
-          return SmartRefresher(
-            controller: _refreshController,
-            onRefresh: _refresh,
-            child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context,index){
-                  return new Text(index.toString());
-                }
-            ),
-          );
-        }
-        else if(viewModel.loading)
-          return LoadingView.normal();
-        else if(viewModel.error != null)
-          return ErrorView(error: viewModel.error,);
+        return Scaffold(
+          appBar: AppBar(),
+          body: _body(viewModel),
+        );
       },
     );
   }
-  Future<Null> _refresh(up) async{
-    await Future.delayed(const Duration(milliseconds:800));
-    _refreshController.sendBack(true,RefreshStatus.completed);
-    return null;
+  Widget _body(_SocialCardList viewModel){
+    if(loadedItems.length != 0)
+    {
+      return SmartRefresher(
+        controller: _refreshController,
+        onRefresh: viewModel.refresh,
+        enablePullUp: true,
+        enablePullDown: true,
+        child: SocialItemsCardList.getList(loadedItems),
+      );
+    }
+    else if(viewModel.loading)
+      return LoadingView.normal();
+    else if(viewModel.error != null)
+      return ErrorView(error: viewModel.error,);
+    else
+      return Text("loading=${viewModel.loading} , error=${viewModel.error} , items=${viewModel.items.length}");
   }
 }
 
 class _SocialCardList{
   String error;
-  bool loading;
+  bool loading = true;
   List<SocialItem> items = [];
+  Function refresh;
+  Function loadMore;
+
 }

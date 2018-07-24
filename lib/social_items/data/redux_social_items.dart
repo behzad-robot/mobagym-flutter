@@ -82,10 +82,12 @@ void socialMiddleware(Store<MobagymAppState> store, dynamic action, NextDispatch
   next(action);
 }
 void _loadItemsToStore(Store<MobagymAppState> store,String params){
+  print("_loadItemsToStore");
   API.SocialItems.loadItems(params).then((items){
-    store.dispatch(new _ItemsLoaded(items: items));
+    store.dispatch(new _ItemsLoaded(params,items: items));
   }).catchError((err){
-    store.dispatch(new _ItemsLoaded(error:err.toString()));
+    print("error="+err.toString());
+    store.dispatch(new _ItemsLoaded(params,error:err.toString()));
   });
 }
 SocialState socialReducer(SocialState state,dynamic action)
@@ -113,6 +115,60 @@ SocialState socialReducer(SocialState state,dynamic action)
     }
     //TODO: in reload query case => reload friend queries!
   }
+  else if(action is _ItemsLoaded)
+  {
+    print("_ItemsLoaded params=${action.params} , error=${action.error} , items=${action.items.length}");
+    if(action.error == null)
+    {
+      var newQueries = <SocialItemQuery>[]..addAll(state.queries.asList());
+      var newItems = <SocialItem>[]..addAll(state.items.asList());
+      //add items:
+      for(var i = 0; i < action.items.length ; i++){
+        var index = state.getItemIndex(action.items[i].id);
+        if(index == -1)
+          newItems.add(action.items[i]);
+        else
+          newItems[index] = action.items[i];
+        
+      }
+      print("items added=>${newItems.length}");
+      //find & update query:
+      if(action.params != null)
+      {
+        var queryIndex = state.getQueryIndex(action.params);
+        if(queryIndex != -1)
+        {
+          newQueries[queryIndex].error = null;
+          newQueries[queryIndex].loading = false;
+          for(var i = 0 ; i < action.items.length; i++)
+            if(!newQueries[queryIndex].ids.contains(action.items[i].id))
+              newQueries[queryIndex].ids.add(action.items[i].id);
+          print("query updated => ${newQueries[queryIndex].ids.length}");
+        }
+      }
+
+      state = SocialState((b)=> b
+        ..items = new BuiltList<SocialItem>(newItems).toBuilder()
+        ..queries = new BuiltList<SocialItemQuery>(newQueries).toBuilder()
+      );
+    }
+    else
+    {
+      var newQueries = state.queries.asList();
+      if(action.params != null)
+      {
+        var queryIndex = state.getQueryIndex(action.params);
+        if(queryIndex != -1)
+        {
+          newQueries[queryIndex].loading = false;
+          newQueries[queryIndex].error = action.error;
+        }
+        state = SocialState((b)=> b
+          ..queries = BuiltList(newQueries).toBuilder()
+        );
+      }
+    }
+  }
   return state;
 }
 
@@ -129,9 +185,10 @@ class SocialItemQuery{
 ///store.dispatch(Actions.SocialActions.getItems());
 class SocialActionsSet {
   _GetItems getItems(String params,{bool forceReload=false}) => _GetItems(params,forceReload: forceReload);
+  //_ReloadQuery reload(String params) => _ReloadQuery(params);
 
-  _ItemsLoaded itemsLoaded(List<SocialItem> items) => _ItemsLoaded(items:items);
-  _ItemsLoaded itemsLoadFailed(String err) => _ItemsLoaded(error: err);
+  _ItemsLoaded itemsLoaded(String params,List<SocialItem> items) => _ItemsLoaded(params,items:items);
+  _ItemsLoaded itemsLoadFailed(String params,String err) => _ItemsLoaded(params,error: err);
 
 
 //inner actions: only called via middleware dont need a function :))
@@ -144,9 +201,10 @@ class _GetItems{
   _GetItems(this.params,{this.forceReload=false});
 }
 class _ItemsLoaded{
+  String params;
   List<SocialItem> items = [];
   String error = null;
-  _ItemsLoaded({this.items,this.error});
+  _ItemsLoaded(this.params,{this.items,this.error});
 }
 class _CreateQuery{
   String params;

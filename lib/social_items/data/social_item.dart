@@ -14,20 +14,21 @@ part 'social_item.g.dart';
 abstract class SocialItem implements Built<SocialItem, SocialItemBuilder> {
 
   @nullable int get id;
+  @nullable String get type;
   @nullable int get userId; //owner
   @nullable String get video;
   @nullable String get videoLink;
   @nullable String get image;
   @nullable String get thumbnail;
   @nullable String get description;
-  @nullable String get createdAt;
   @nullable int get likeCount;
-  @nullable BuiltList<int> get categories;
-  @nullable String get type;
   @nullable int get commentsCount;
-  @nullable String get shareUrl;
-  @nullable int get visists;
+  //@nullable List<int> get categories;
 
+
+  @nullable String get shareUrl;
+  @nullable int get visits;
+  @nullable String get createdAt;
 
   SocialItem._();
   factory SocialItem([updates(SocialItemBuilder b)]) = _$SocialItem;
@@ -35,16 +36,25 @@ abstract class SocialItem implements Built<SocialItem, SocialItemBuilder> {
 }
 
 SocialItem parseSocialItemStr(String js){
-  var jo = json.decode(js);
   return parseSocialItem(json.decode(js));
 }
 SocialItem parseSocialItem(dynamic jo){
   final builder = SocialItemBuilder();
 
   builder.id = jo['id'];
+  builder.type = jo['type'];
   builder.userId = jo['owner'];
-  builder.image = jo['image'];
+  builder.video = jo['video'];
+  builder.videoLink = jo['video_link'];
+  builder.image= jo['image'];
+  builder.thumbnail= jo['thumbnail'];
   builder.description = jo['description'];
   builder.likeCount = jo['likes'];
+  builder.commentsCount = jo['comments_count'];
+  builder.shareUrl = jo['share_url'];
+  builder.visits = jo['visits'];
+  builder.createdAt = jo['create_date'];
+
+
   return builder.build();
 }

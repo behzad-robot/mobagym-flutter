@@ -8,6 +8,7 @@ import 'package:mobagym/social_items/data/redux_social_items.dart';
 
 void main(){
   var initialState = MobagymAppState();
+  print("main()");
   final store = new Store<MobagymAppState>(
     mobagymReducer,
     initialState: initialState,
