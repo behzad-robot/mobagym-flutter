@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:mobagym/users/data/user.dart';
 
 
 
@@ -29,6 +30,18 @@ abstract class SocialItem implements Built<SocialItem, SocialItemBuilder> {
   @nullable String get shareUrl;
   @nullable int get visits;
   @nullable String get createdAt;
+
+  @nullable User get user;
+
+  static const String TYPE_IMAGE = "imagepost";
+  static const String TYPE_VIDEO = "videopost";
+
+  bool isImage(){
+    return type == TYPE_IMAGE;
+  }
+  bool isVideo(){
+    return type == TYPE_VIDEO;
+  }
 
   SocialItem._();
   factory SocialItem([updates(SocialItemBuilder b)]) = _$SocialItem;

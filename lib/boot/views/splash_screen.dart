@@ -94,15 +94,15 @@ class _SplashScreenState extends State<SplashScreen> {
     //check versions and update modules:
     if(appInfo.levelsVersion != webAppInfo.levelsVersion)
       appInfo.levelsInfo = await API.Boot.loadLevelsInfo();
-    if(appInfo.achievementsVersion != webAppInfo.achievementsVersion)
-      appInfo.achievementsInfo = await API.Boot.loadAchievements();
+    /*if(appInfo.achievementsVersion != webAppInfo.achievementsVersion)
+      appInfo.achievementsInfo = await API.Boot.loadAchievements();*/
     /*if(appInfo.socialTagsVersion != webAppInfo.socialTagsVersion)
       appInfo.socialTagsInfo = new SocialTagsInfo(await API.SocialItems.loadSocialTags());*/
     //checking logs:
     print("level count="+appInfo.levelsInfo.levels.length.toString());
     print("level 0 . gif ="+appInfo.levelsInfo.levels[0].gif);
-    print("achievement count="+appInfo.achievementsInfo.achievements.length.toString());
-    print("achievement 0.token="+appInfo.achievementsInfo.achievements[0].token);
+    /*print("achievement count="+appInfo.achievementsInfo.achievements.length.toString());
+    print("achievement 0.token="+appInfo.achievementsInfo.achievements[0].token);*/
     /*print("social tags count="+appInfo.socialTagsInfo.tags.length.toString());
     for(var i = 0 ; i < appInfo.socialTagsInfo.tags.length ; i++)
       print(appInfo.socialTagsInfo.tags[i].name);*/

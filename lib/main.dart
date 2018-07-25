@@ -5,6 +5,7 @@ import 'package:mobagym/boot/views/splash_screen.dart';
 import 'package:mobagym/home/home_widget.dart';
 import 'package:redux/redux.dart';
 import 'package:mobagym/social_items/data/redux_social_items.dart';
+import 'package:mobagym/users/data/redux_users.dart';
 
 void main(){
   var initialState = MobagymAppState();
@@ -12,7 +13,7 @@ void main(){
   final store = new Store<MobagymAppState>(
     mobagymReducer,
     initialState: initialState,
-    middleware: [mobagymMiddleware,socialMiddleware]
+    middleware: [mobagymMiddleware,socialMiddleware , userMiddleware]
   );
   runApp(new MyApp(store));
 }
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           theme: new ThemeData(
             primaryColor: Colors.green,
             primarySwatch: Colors.blue,
+            fontFamily: 'byekan'
           ),
           home : new SplashScreen(),
           //initialRoute: '/splash',

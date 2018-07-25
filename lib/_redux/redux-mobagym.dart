@@ -1,6 +1,7 @@
 
 import 'package:built_value/built_value.dart';
 import 'package:mobagym/boot/data/redux_boot.dart';
+import 'package:mobagym/games/data/redux-games.dart';
 import 'package:mobagym/social_items/data/redux_social_items.dart';
 import 'package:mobagym/users/data/redux_users.dart';
 import 'package:redux/redux.dart';
@@ -8,9 +9,13 @@ import 'package:redux/redux.dart';
 part 'redux-mobagym.g.dart';
 
 abstract class MobagymAppState implements Built<MobagymAppState, MobagymAppStateBuilder> {
+  @nullable AppInfoState get appInfoState;
 
   SocialState get socialState;
-  @nullable AppInfoState get appInfoState;
+  UsersState get usersState;
+  GamesState get gamesState;
+
+
 
   MobagymAppState._();
   factory MobagymAppState([updates(MobagymAppStateBuilder b)]) = _$MobagymAppState;
@@ -22,6 +27,7 @@ MobagymAppState mobagymReducer(MobagymAppState state,dynamic action)
   var s = new MobagymAppState((b)=>b
     ..socialState = socialReducer(state.socialState, action).toBuilder()
     ..appInfoState = bootReducer(state.appInfoState, action).toBuilder()
+    ..usersState = usersReducer(state.usersState, action).toBuilder()
   );
   print("mobagymReducer");
   print(s);

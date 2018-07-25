@@ -12,7 +12,7 @@ class MyVideoPlayer extends StatefulWidget{
   State<StatefulWidget> createState() => _MyVideoPlayerState(url:url,thumbnail: thumbnail,height: height);
 
 }
-class _MyVideoPlayerState extends State<MyVideoPlayer> with SingleTickerProviderStateMixin{
+class _MyVideoPlayerState extends State<MyVideoPlayer> with SingleTickerProviderStateMixin{ // ignore: mixin_inherits_from_not_object
   String url,thumbnail;
   VideoPlayerController _controller;
   bool _isPlaying = false;
@@ -94,7 +94,7 @@ class PlayerTimeView extends StatefulWidget{
   State<StatefulWidget> createState() => _PlayerTimeView(_controller);
 
 }
-class _PlayerTimeView extends State<PlayerTimeView> with SingleTickerProviderStateMixin{
+class _PlayerTimeView extends State<PlayerTimeView> with SingleTickerProviderStateMixin{ // ignore: mixin_inherits_from_not_object
   VideoPlayerController _controller;
   int lastTimePositionSeconds = 0;
   int lastTimePositionMinutes = 0;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobagym/boot/data/boot_api.dart';
+import 'package:mobagym/games/data/games_api.dart';
 import 'package:mobagym/social_items/data/social_items_api.dart';
 import 'package:mobagym/users/data/users_api.dart';
 
@@ -132,10 +133,11 @@ class API {
   static BootAPI Boot = new BootAPI();
   static UsersAPI Users = new UsersAPI();
   static SocialItemsAPI SocialItems = new SocialItemsAPI();
+  static GamesAPI Games = new GamesAPI();
   /*
   static UsersAPI Users = new UsersAPI();
   static CommentsAPI Comments = new CommentsAPI();
 
-  static GamesAPI Games = new GamesAPI();
+
   static ChallengesAPI Challenges  = new ChallengesAPI();*/
 }

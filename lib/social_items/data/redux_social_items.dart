@@ -84,9 +84,30 @@ void socialMiddleware(Store<MobagymAppState> store, dynamic action, NextDispatch
 void _loadItemsToStore(Store<MobagymAppState> store,String params){
   print("_loadItemsToStore");
   API.SocialItems.loadItems(params).then((items){
-    store.dispatch(new _ItemsLoaded(params,items: items));
+    var userIds = <int>[];
+    for(int i = 0 ; i < items.length;i++)
+      if(!userIds.contains(items[i].userId))
+        userIds.add(items[i].userId);
+    API.Users.loadUsers("?ids="+API.apiArrayParams(userIds)).then((users){
+      for(int i = 0 ; i < items.length;i++) {
+        for(int j= 0; j < users.length;j++){
+          if(items[i].userId == users[j].id){
+            var builder = items[i].toBuilder();
+            builder.user = users[j].toBuilder();
+            items[i] = builder.build();
+            break;
+          }
+        }
+      }
+      store.dispatch(Actions.UserActions.usersLoaded("?ids="+API.apiArrayParams(userIds), users));
+      store.dispatch(new _ItemsLoaded( params , items: items ));
+    }).catchError((err){
+      print("_loadItemsToStore.loadUsers.error="+err.toString());
+      store.dispatch(new _ItemsLoaded(params,error:err.toString()));
+    });
+    //store.dispatch(new _ItemsLoaded(params,items: items));
   }).catchError((err){
-    print("error="+err.toString());
+    print("_loadItemsToStore.error="+err.toString());
     store.dispatch(new _ItemsLoaded(params,error:err.toString()));
   });
 }

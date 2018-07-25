@@ -41,6 +41,8 @@ class _$SocialItem extends SocialItem {
   final int visits;
   @override
   final String createdAt;
+  @override
+  final User user;
 
   factory _$SocialItem([void updates(SocialItemBuilder b)]) =>
       (new SocialItemBuilder()..update(updates)).build();
@@ -58,7 +60,8 @@ class _$SocialItem extends SocialItem {
       this.commentsCount,
       this.shareUrl,
       this.visits,
-      this.createdAt})
+      this.createdAt,
+      this.user})
       : super._();
 
   @override
@@ -84,7 +87,8 @@ class _$SocialItem extends SocialItem {
         commentsCount == other.commentsCount &&
         shareUrl == other.shareUrl &&
         visits == other.visits &&
-        createdAt == other.createdAt;
+        createdAt == other.createdAt &&
+        user == other.user;
   }
 
   @override
@@ -100,19 +104,21 @@ class _$SocialItem extends SocialItem {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    type.hashCode),
-                                                userId.hashCode),
-                                            video.hashCode),
-                                        videoLink.hashCode),
-                                    image.hashCode),
-                                thumbnail.hashCode),
-                            description.hashCode),
-                        likeCount.hashCode),
-                    commentsCount.hashCode),
-                shareUrl.hashCode),
-            visits.hashCode),
-        createdAt.hashCode));
+                                                $jc(
+                                                    $jc($jc(0, id.hashCode),
+                                                        type.hashCode),
+                                                    userId.hashCode),
+                                                video.hashCode),
+                                            videoLink.hashCode),
+                                        image.hashCode),
+                                    thumbnail.hashCode),
+                                description.hashCode),
+                            likeCount.hashCode),
+                        commentsCount.hashCode),
+                    shareUrl.hashCode),
+                visits.hashCode),
+            createdAt.hashCode),
+        user.hashCode));
   }
 
   @override
@@ -130,7 +136,8 @@ class _$SocialItem extends SocialItem {
           ..add('commentsCount', commentsCount)
           ..add('shareUrl', shareUrl)
           ..add('visits', visits)
-          ..add('createdAt', createdAt))
+          ..add('createdAt', createdAt)
+          ..add('user', user))
         .toString();
   }
 }
@@ -190,6 +197,10 @@ class SocialItemBuilder implements Builder<SocialItem, SocialItemBuilder> {
   String get createdAt => _$this._createdAt;
   set createdAt(String createdAt) => _$this._createdAt = createdAt;
 
+  UserBuilder _user;
+  UserBuilder get user => _$this._user ??= new UserBuilder();
+  set user(UserBuilder user) => _$this._user = user;
+
   SocialItemBuilder();
 
   SocialItemBuilder get _$this {
@@ -207,6 +218,7 @@ class SocialItemBuilder implements Builder<SocialItem, SocialItemBuilder> {
       _shareUrl = _$v.shareUrl;
       _visits = _$v.visits;
       _createdAt = _$v.createdAt;
+      _user = _$v.user?.toBuilder();
       _$v = null;
     }
     return this;
@@ -225,21 +237,35 @@ class SocialItemBuilder implements Builder<SocialItem, SocialItemBuilder> {
 
   @override
   _$SocialItem build() {
-    final _$result = _$v ??
-        new _$SocialItem._(
-            id: id,
-            type: type,
-            userId: userId,
-            video: video,
-            videoLink: videoLink,
-            image: image,
-            thumbnail: thumbnail,
-            description: description,
-            likeCount: likeCount,
-            commentsCount: commentsCount,
-            shareUrl: shareUrl,
-            visits: visits,
-            createdAt: createdAt);
+    _$SocialItem _$result;
+    try {
+      _$result = _$v ??
+          new _$SocialItem._(
+              id: id,
+              type: type,
+              userId: userId,
+              video: video,
+              videoLink: videoLink,
+              image: image,
+              thumbnail: thumbnail,
+              description: description,
+              likeCount: likeCount,
+              commentsCount: commentsCount,
+              shareUrl: shareUrl,
+              visits: visits,
+              createdAt: createdAt,
+              user: _user?.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'user';
+        _user?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'SocialItem', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

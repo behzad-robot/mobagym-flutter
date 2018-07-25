@@ -9,5 +9,5 @@ android/
 ios/
 .idea/
 test/
-
+*.rar
 .flutter-plugins

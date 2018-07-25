@@ -93,7 +93,7 @@ class _HomeWidget extends State<HomeWidget> {
       view = new ChallengesListContainer();*/
     else if(t == TabItem.Games)
       view = GamesTab();*/
-    if (t== TabItem.Home || t == TabItem.Chat)
+    if (t== TabItem.Home)
       view = new TestHelper();
     else
       view = new Text("This is empty");

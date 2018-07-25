@@ -26,8 +26,6 @@ class _$UsersState extends UsersState {
       (new UsersStateBuilder()..update(updates)).build();
 
   _$UsersState._({this.currentUser, this.queries, this.users}) : super._() {
-    if (currentUser == null)
-      throw new BuiltValueNullFieldError('UsersState', 'currentUser');
     if (queries == null)
       throw new BuiltValueNullFieldError('UsersState', 'queries');
     if (users == null)
@@ -111,14 +109,14 @@ class UsersStateBuilder implements Builder<UsersState, UsersStateBuilder> {
     try {
       _$result = _$v ??
           new _$UsersState._(
-              currentUser: currentUser.build(),
+              currentUser: _currentUser?.build(),
               queries: queries.build(),
               users: users.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'currentUser';
-        currentUser.build();
+        _currentUser?.build();
         _$failedField = 'queries';
         queries.build();
         _$failedField = 'users';

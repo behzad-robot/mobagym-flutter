@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:mobagym/social_items/card_list/social_item_card.dart';
+import 'package:mobagym/social_items/views//social_item_card.dart';
 import 'package:mobagym/social_items/data/social_item.dart';
 
 class SocialItemsCardList extends StatelessWidget{

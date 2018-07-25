@@ -9,15 +9,16 @@ part 'user.g.dart';
 abstract class User implements Built<User, UserBuilder> {
   static Serializer<User> get serializer => _$userSerializer;
 
-  @nullable int get id;
+  int get id;
   String get username;
-  String get profileImage;
+  @nullable String get profileImage;
+  @nullable String get cover; //cover_photo
   @nullable String get token;
-  String get nickname;
+  @nullable String get nickname;
   @nullable String get password;
   @nullable String get deviceId; //device_id
   @nullable String get lastLogin; //last_login
-  String get cover; //cover_photo
+
 
   //xp info:
   String get title;
@@ -60,12 +61,15 @@ abstract class User implements Built<User, UserBuilder> {
   User._();
   factory User([updates(UserBuilder b)]) = _$User;
 }
-User parseUser(String str){
+User parseUserFromString(String str){
   final jj = json.decode(str);
-  print("ok start user!");
+  return parseUser(jj);
+}
+User parseUser(dynamic jj){
+  //print("ok start user!");
   final userBuilder = UserBuilder();
   userBuilder.username = jj['username'];
-  userBuilder.id = jj['user_id'];
+  userBuilder.id = jj['user_id'] ?? jj['id'];
   userBuilder.profileImage = jj['profile_image'];
   userBuilder.nickname = jj['nickname'];
   userBuilder.deviceId = jj['device_id'];
@@ -85,8 +89,10 @@ User parseUser(String str){
   userBuilder.gender = jj['gender'];
   userBuilder.visits = jj['visits'];
   userBuilder.bio = jj['bio'];
-  userBuilder.gif = jj['gif'];
-  print("this is fine!");
+  userBuilder.gif = jj['gif'] ?? 'http://mobagym.com/media/mobagym-app-info/levels/gifs/finalGif1.gif';
+  /*print("this is fine!");
+  print("username=${userBuilder.username}");
+  print(userBuilder.cover);*/
   return userBuilder.build();
 }
 /*

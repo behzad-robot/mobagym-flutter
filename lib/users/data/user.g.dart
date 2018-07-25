@@ -26,17 +26,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
   Iterable serialize(Serializers serializers, User object,
       {FullType specifiedType: FullType.unspecified}) {
     final result = <Object>[
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(int)),
       'username',
       serializers.serialize(object.username,
-          specifiedType: const FullType(String)),
-      'profileImage',
-      serializers.serialize(object.profileImage,
-          specifiedType: const FullType(String)),
-      'nickname',
-      serializers.serialize(object.nickname,
-          specifiedType: const FullType(String)),
-      'cover',
-      serializers.serialize(object.cover,
           specifiedType: const FullType(String)),
       'title',
       serializers.serialize(object.title,
@@ -54,16 +47,28 @@ class _$UserSerializer implements StructuredSerializer<User> {
       'bio',
       serializers.serialize(object.bio, specifiedType: const FullType(String)),
     ];
-    if (object.id != null) {
+    if (object.profileImage != null) {
       result
-        ..add('id')
-        ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(int)));
+        ..add('profileImage')
+        ..add(serializers.serialize(object.profileImage,
+            specifiedType: const FullType(String)));
+    }
+    if (object.cover != null) {
+      result
+        ..add('cover')
+        ..add(serializers.serialize(object.cover,
+            specifiedType: const FullType(String)));
     }
     if (object.token != null) {
       result
         ..add('token')
         ..add(serializers.serialize(object.token,
+            specifiedType: const FullType(String)));
+    }
+    if (object.nickname != null) {
+      result
+        ..add('nickname')
+        ..add(serializers.serialize(object.nickname,
             specifiedType: const FullType(String)));
     }
     if (object.password != null) {
@@ -153,6 +158,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
           result.profileImage = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'cover':
+          result.cover = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'token':
           result.token = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -171,10 +180,6 @@ class _$UserSerializer implements StructuredSerializer<User> {
           break;
         case 'lastLogin':
           result.lastLogin = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'cover':
-          result.cover = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'title':
@@ -244,6 +249,8 @@ class _$User extends User {
   @override
   final String profileImage;
   @override
+  final String cover;
+  @override
   final String token;
   @override
   final String nickname;
@@ -253,8 +260,6 @@ class _$User extends User {
   final String deviceId;
   @override
   final String lastLogin;
-  @override
-  final String cover;
   @override
   final String title;
   @override
@@ -289,12 +294,12 @@ class _$User extends User {
       {this.id,
       this.username,
       this.profileImage,
+      this.cover,
       this.token,
       this.nickname,
       this.password,
       this.deviceId,
       this.lastLogin,
-      this.cover,
       this.title,
       this.xp,
       this.level,
@@ -309,13 +314,9 @@ class _$User extends User {
       this.bio,
       this.gif})
       : super._() {
+    if (id == null) throw new BuiltValueNullFieldError('User', 'id');
     if (username == null)
       throw new BuiltValueNullFieldError('User', 'username');
-    if (profileImage == null)
-      throw new BuiltValueNullFieldError('User', 'profileImage');
-    if (nickname == null)
-      throw new BuiltValueNullFieldError('User', 'nickname');
-    if (cover == null) throw new BuiltValueNullFieldError('User', 'cover');
     if (title == null) throw new BuiltValueNullFieldError('User', 'title');
     if (xp == null) throw new BuiltValueNullFieldError('User', 'xp');
     if (level == null) throw new BuiltValueNullFieldError('User', 'level');
@@ -339,12 +340,12 @@ class _$User extends User {
     return id == other.id &&
         username == other.username &&
         profileImage == other.profileImage &&
+        cover == other.cover &&
         token == other.token &&
         nickname == other.nickname &&
         password == other.password &&
         deviceId == other.deviceId &&
         lastLogin == other.lastLogin &&
-        cover == other.cover &&
         title == other.title &&
         xp == other.xp &&
         level == other.level &&
@@ -381,12 +382,12 @@ class _$User extends User {
                                                                     $jc(
                                                                         $jc(
                                                                             $jc($jc($jc($jc(0, id.hashCode), username.hashCode), profileImage.hashCode),
-                                                                                token.hashCode),
-                                                                            nickname.hashCode),
-                                                                        password.hashCode),
-                                                                    deviceId.hashCode),
-                                                                lastLogin.hashCode),
-                                                            cover.hashCode),
+                                                                                cover.hashCode),
+                                                                            token.hashCode),
+                                                                        nickname.hashCode),
+                                                                    password.hashCode),
+                                                                deviceId.hashCode),
+                                                            lastLogin.hashCode),
                                                         title.hashCode),
                                                     xp.hashCode),
                                                 level.hashCode),
@@ -408,12 +409,12 @@ class _$User extends User {
           ..add('id', id)
           ..add('username', username)
           ..add('profileImage', profileImage)
+          ..add('cover', cover)
           ..add('token', token)
           ..add('nickname', nickname)
           ..add('password', password)
           ..add('deviceId', deviceId)
           ..add('lastLogin', lastLogin)
-          ..add('cover', cover)
           ..add('title', title)
           ..add('xp', xp)
           ..add('level', level)
@@ -446,6 +447,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String get profileImage => _$this._profileImage;
   set profileImage(String profileImage) => _$this._profileImage = profileImage;
 
+  String _cover;
+  String get cover => _$this._cover;
+  set cover(String cover) => _$this._cover = cover;
+
   String _token;
   String get token => _$this._token;
   set token(String token) => _$this._token = token;
@@ -465,10 +470,6 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String _lastLogin;
   String get lastLogin => _$this._lastLogin;
   set lastLogin(String lastLogin) => _$this._lastLogin = lastLogin;
-
-  String _cover;
-  String get cover => _$this._cover;
-  set cover(String cover) => _$this._cover = cover;
 
   String _title;
   String get title => _$this._title;
@@ -529,12 +530,12 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _id = _$v.id;
       _username = _$v.username;
       _profileImage = _$v.profileImage;
+      _cover = _$v.cover;
       _token = _$v.token;
       _nickname = _$v.nickname;
       _password = _$v.password;
       _deviceId = _$v.deviceId;
       _lastLogin = _$v.lastLogin;
-      _cover = _$v.cover;
       _title = _$v.title;
       _xp = _$v.xp;
       _level = _$v.level;
@@ -571,12 +572,12 @@ class UserBuilder implements Builder<User, UserBuilder> {
             id: id,
             username: username,
             profileImage: profileImage,
+            cover: cover,
             token: token,
             nickname: nickname,
             password: password,
             deviceId: deviceId,
             lastLogin: lastLogin,
-            cover: cover,
             title: title,
             xp: xp,
             level: level,
